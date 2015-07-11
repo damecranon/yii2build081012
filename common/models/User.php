@@ -6,8 +6,10 @@ use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
+use yii\helpers\ArrayHelper;
 use yii\web\IdentityInterface;
 use yii\helpers\Secruity;
+use backend\models\Role;
 
 
 /**
@@ -66,6 +68,7 @@ class User extends ActiveRecord implements IdentityInterface
             //['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
             ['role_id', 'default', 'value' => 1],
             ['user_type_id', 'default', 'value' =>1],
+
 
             ['username', 'filter', 'filter' => 'trim'],
             ['username', 'required'],
@@ -220,4 +223,25 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->password_reset_token = null;
     }
+
+    public function getProfile() {
+        return $this->hasOne(Profile::className(), ['user_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     * gets the role name
+     */
+    public function getRole(){
+        return $this->hasOne(Role::className(), ['id' => 'role_id']);
+    }
+
+    /**
+     * get list of roles for dropdown
+     */
+    public static function getRoleList() {
+        $droptions = Role::find()->asArray()->all();
+        return ArrayHelper::map($droptions, 'id', 'role_name');
+    }
+
 }
