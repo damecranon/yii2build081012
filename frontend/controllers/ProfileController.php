@@ -116,14 +116,17 @@ class ProfileController extends Controller
     /**
      * Deletes an existing Profile model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param string $id
      * @return mixed
      */
-    public function actionDelete($id)
+    public function actionDelete()
     {
-        $this->findModel($id)->delete();
+        $model = Profile::find()->where([
+           'user_id' => Yii::$app->user->identity->id
+        ])->one();
 
-        return $this->redirect(['index']);
+        $this->findModel($model->id)->delete();
+
+        return $this->redirect(['site/index']);
     }
 
     /**
