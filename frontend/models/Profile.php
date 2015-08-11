@@ -81,6 +81,7 @@ class Profile extends \yii\db\ActiveRecord
             'gender_id' => 'Gender ID',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            'profileIdLink' => Yii::t('app', 'Profile'),
             //'genderName' => Yii::t('app', 'Gender'),
             //'userLink' => Yii::t('app', 'User'),
             //'profileIdLink' => Yii::t('app', 'Profile')
@@ -145,6 +146,12 @@ class Profile extends \yii\db\ActiveRecord
      */
     public function getProfileLink() {
         $url = Url::to(['profile/link', 'id' => $this->id]);
+        $options = [];
+        return Html::a($this->id, $url, $options);
+    }
+
+    public function getProfileIdLink() {
+        $url = Url::to(['profile/update', 'id'=>$this->id]);
         $options = [];
         return Html::a($this->id, $url, $options);
     }

@@ -4,6 +4,7 @@ namespace backend\models;
 
 use Yii;
 use common\models\User;
+
 /**
  * This is the model class for table "role".
  *
@@ -16,6 +17,7 @@ class Role extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+
     public static function tableName()
     {
         return 'role';
@@ -24,12 +26,13 @@ class Role extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+
     public function rules()
     {
         return [
             [['role_name', 'role_value'], 'required'],
             [['role_value'], 'integer'],
-            [['role_id'], 'in', 'range' => array_keys($this->getRoleList())],
+            [['role_value'],'in', 'range'=>range(1,100)],
             [['role_name'], 'string', 'max' => 45]
         ];
     }
@@ -37,6 +40,7 @@ class Role extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+
     public function attributeLabels()
     {
         return [
@@ -46,7 +50,15 @@ class Role extends \yii\db\ActiveRecord
         ];
     }
 
-    public function getUsers() {
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+
+    public function getUsers()
+    {
+
         return $this->hasMany(User::className(), ['role_id' => 'id']);
+
     }
+
 }
